@@ -93,7 +93,7 @@ Follow these step-by-step instructions to get the application running on your co
    git clone git@github.com:michaeldeur/canvas-mini-lab.git
    ```
    Else:
-   ```
+   ```bash
    git clone https://github.com/michaeldeur/canvas-mini-lab.git
    ```
 
@@ -122,7 +122,7 @@ macOS: Press Ctrl + O, press Enter, then press Ctrl + X to exit Nano.
 **NOTE: Never commit your .env file to GitHub. It is listed in .gitignore to protect your token.**
 
 ## Step 3: Open the Project in IntelliJ IDEA
-Launch IntelliJ IDEA.Click Open on the welcome screen (or go to File $\rightarrow$ Open...). 
+Launch IntelliJ IDEA. Click Open on the welcome screen (or go to File $\rightarrow$ Open...). 
 Select the canvas-mini-lab folder you cloned in Step 1 and click OK. 
 If prompted, select Trust Project. Ensure Project SDK is set to Java 17: Go to File $\rightarrow$ Project Structure $\rightarrow$ Project. 
 Under SDK, select 17 (Oracle OpenJDK or Temurin). If Java 17 is not listed, click Download SDK, choose 17, and click Apply.

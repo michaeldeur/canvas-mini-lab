@@ -14,7 +14,9 @@
 
 <div class="error-card">
     <h1>An Error Occurred</h1>
-    <p th:text="${error}">Detailed error message will appear here.</p>
+    <p th:text="${errorMessage != null ? errorMessage : (message != null ? message : error)}">
+        Detailed error message will appear here.
+    </p>
     <p><strong>Troubleshooting Tip:</strong> Make sure your <code>CANVAS_API_TOKEN</code> is set in your environment variables and has not expired in Canvas Settings.</p>
     <br>
     <a href="/">&larr; Back to Home</a>
