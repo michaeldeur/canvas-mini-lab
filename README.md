@@ -172,21 +172,21 @@ NOTE: Audio version of GIF in Demos folder.
 
 ## Requirements
 ### Functional Requirements
-* **Calls at least two distinct Canvas API endpoints.**
-* I call the endpoints for courses, enrollment, and profile.
-* **Accepts user input.**
-* The user can input through the course dropdown or by checking the boxes for calculating grades.
-* **Produces formatted terminal output.**
-* My program doesn't dump raw JSON to the user, but converts it to Java objects used in HTML templates.
-* **Handles errors gracefully.**
-* If there is an error, the error.html file will be triggered and show the error. Reloading, resets and tries to reload the main page.
-* **Handles pagination.**
-* I retrieve all pages and converts them through using DTOs.
+* **Calls at least two distinct Canvas API endpoints.**  
+I call the endpoints for courses, enrollment, and profile.
+* **Accepts user input.**  
+The user can input through the course dropdown or by checking the boxes for calculating grades.
+* **Produces formatted terminal output.**  
+My program doesn't dump raw JSON to the user, but converts it to Java objects used in HTML templates.
+* **Handles errors gracefully.**  
+If there is an error, the error.html file will be triggered and show the error. Reloading, resets and tries to reload the main page.
+* **Handles pagination.**  
+I retrieve all pages and converts them through using DTOs.
 
 ### Non-Functional Requirements
-* **No secrets in the repo**
-* The .env file is ignored and an .env.example is in its place.
-* **Clean code.**
-* Code methods have Java Doc explanations and each section in index.html is documented for clarity.
-* **Works out of the box**
-* All needed setup instructions are in the README.md. I chose to require users to have Intellij as a prerequisite as it seemed to be the simplest way to used Maven.
+* **No secrets in the repo**  
+The .env file is ignored and an .env.example is in its place.
+* **Clean code.**  
+Code methods have Java Doc explanations and each section in index.html is documented for clarity.
+* **Works out of the box**  
+All needed setup instructions are in the README.md. I chose to require users to have Intellij as a prerequisite as it seemed to be the simplest way to used Maven.
