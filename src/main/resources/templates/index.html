@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen antialiased">
+
+<!-- Top Navigation Header -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="bg-red-600 text-white font-bold rounded-lg w-9 h-9 flex items-center justify-center text-lg shadow-sm">
+                C
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-slate-900 leading-tight">Student Dashboard</h1>
+                <p class="text-xs text-slate-500"></p>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div th:if="${profile != null}" class="flex items-center space-x-3">
+            <span class="text-sm font-semibold text-slate-800 hidden sm:inline" th:text="${profile.name}">Student Name</span>
+            <img th:if="${profile.avatarUrl != null}" th:src="${profile.avatarUrl}" class="w-9 h-9 rounded-full border border-slate-200" alt="Avatar">
+        </div>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+
+    <!-- Dynamic GPA Score Banner -->
+    <section class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+        <!-- Overall Calculated GPA Box -->
+        <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-slate-700 pb-4 md:pb-0">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Calculated Overall GPA</p>
+            <div class="flex items-baseline space-x-2 mt-1">
+                <span id="gpaDisplay" class="text-4xl font-extrabold text-emerald-400">N/A</span>
+                <span class="text-xs text-slate-400">/ 4.00</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">
+                Includes <span id="includedCourseCount" class="font-bold text-white">0</span> checked course(s).
+            </p>
+        </div>
+
+        <!-- Active List of Courses in GPA -->
+        <div class="md:col-span-2 space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Courses Included in GPA Calculation</p>
+            <div id="includedBadgesContainer" class="flex flex-wrap gap-2">
+                <span class="text-xs text-slate-400 italic">No courses currently checked.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left Controls & Interactive Class Grade Toggles -->
+        <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6 lg:col-span-1 min-w-0">
+
+            <!-- Course Selector Form -->
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">Select Course</h2>
+                <form action="/assignments" method="post" class="space-y-3">
+                    <select name="courseId" id="courseId" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-red-500">
+                        <option value="" disabled th:selected="${selectedCourseId == null}">-- Choose Course --</option>
+                        <option th:each="course : ${courses}"
+                                th:value="${course.id}"
+                                th:text="${(course.name != null ? course.name : course.courseCode) + (course.currentScore != null ? ' (' + course.currentScore + '%)' : ' (N/A)')}"
+                                th:selected="${course.id == selectedCourseId}">
+                        </option>
+                    </select>
+                    <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                        View Assignments
+                    </button>
+                </form>
+            </div>
+
+            <!-- Interactive Course List with Fixed Alignment -->
+            <div class="border-t border-slate-200 pt-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">GPA Course Selector</h3>
+                    <span class="text-[10px] text-slate-400">Check/uncheck to recalculate</span>
+                </div>
+
+                <div class="space-y-2 max-h-[350px] overflow-y-auto overflow-x-hidden pr-1">
+                    <div th:each="c : ${courses}" class="p-3 bg-slate-50 rounded-lg border border-slate-200/80 flex items-center justify-between min-w-0 gap-2 text-xs hover:bg-slate-100 transition-colors">
+                        <label class="flex items-center space-x-2.5 cursor-pointer min-w-0 flex-1">
+                            <input type="checkbox"
+                                   class="gpa-toggle rounded border-slate-300 text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer flex-shrink-0"
+                                   th:data-name="${c.name != null ? c.name : c.courseCode}"
+                                   th:data-score="${c.currentScore}"
+                                   th:checked="${c.currentScore != null}">
+                            <span class="font-medium text-slate-800 truncate" th:text="${c.name != null ? c.name : c.courseCode}">Course Name</span>
+                        </label>
+
+                        <span th:if="${c.currentScore != null}" class="px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800 flex-shrink-0 whitespace-nowrap" th:text="${c.currentScore + '%'}">88%</span>
+                        <span th:if="${c.currentScore == null}" class="px-2 py-0.5 rounded font-semibold bg-slate-200 text-slate-600 flex-shrink-0 whitespace-nowrap">N/A</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Assignments Table -->
+        <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden lg:col-span-2 min-w-0">
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800">
+                    Assignments
+                    <span th:if="${assignments != null}" class="ml-2 text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-700" th:text="${assignments.size()}">0</span>
+                </h3>
+            </div>
+
+            <div th:if="${assignments == null}" class="p-8 text-center text-sm text-slate-400">
+                Select a course from the left menu to display its assignments.
+            </div>
+
+            <div th:if="${assignments != null and assignments.empty}" class="p-8 text-center text-sm text-slate-500">
+                No assignments found for this course.
+            </div>
+
+            <table th:if="${assignments != null and !assignments.empty}" class="w-full text-left border-collapse text-sm">
+                <thead>
+                <tr class="bg-slate-50/50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">
+                    <th class="py-3 px-4">Title</th>
+                    <th class="py-3 px-4">Due Date</th>
+                    <th class="py-3 px-4">Points</th>
+                    <th class="py-3 px-4 text-right">Canvas Link</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                <tr th:each="a : ${assignments}" class="hover:bg-slate-50/80">
+                    <td class="py-3.5 px-4 font-semibold text-slate-900" th:text="${a.name}">Assignment Title</td>
+                    <td class="py-3.5 px-4 text-xs font-mono text-slate-600" th:text="${a.dueAt != null ? a.dueAt : 'No Due Date'}">Due Date</td>
+                    <td class="py-3.5 px-4 font-bold text-slate-700" th:text="${a.pointsPossible != null ? a.pointsPossible + ' pts' : 'N/A'}">10 pts</td>
+                    <td class="py-3.5 px-4 text-right">
+                        <a th:href="${a.htmlUrl}" target="_blank" class="text-red-600 font-bold hover:underline text-xs">View →</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+</main>
+
+<!-- Client-Side Real-Time GPA Calculator -->
+<script>
+    function percentageToGpa(pct) {
+        if (pct >= 93.0) return 4.0;
+        if (pct >= 90.0) return 3.7;
+        if (pct >= 87.0) return 3.3;
+        if (pct >= 83.0) return 3.0;
+        if (pct >= 80.0) return 2.7;
+        if (pct >= 77.0) return 2.3;
+        if (pct >= 73.0) return 2.0;
+        if (pct >= 70.0) return 1.7;
+        if (pct >= 67.0) return 1.3;
+        if (pct >= 60.0) return 1.0;
+        return 0.0;
+    }
+
+    function recalculateGpa() {
+        const checkboxes = document.querySelectorAll('.gpa-toggle');
+        const badgesContainer = document.getElementById('includedBadgesContainer');
+        const gpaDisplay = document.getElementById('gpaDisplay');
+        const countDisplay = document.getElementById('includedCourseCount');
+
+        let totalGpaPoints = 0;
+        let includedCount = 0;
+        let badgesHtml = '';
+
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                const name = cb.getAttribute('data-name');
+                const scoreAttr = cb.getAttribute('data-score');
+                const score = scoreAttr ? parseFloat(scoreAttr) : null;
+
+                includedCount++;
+
+                if (score !== null && !isNaN(score)) {
+                    totalGpaPoints += percentageToGpa(score);
+                    badgesHtml += `
+                            <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center space-x-2 text-xs">
+                                <span class="font-semibold text-slate-200">${name}</span>
+                                <span class="bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-bold">${score}%</span>
+                            </div>
+                        `;
+                } else {
+                    badgesHtml += `
+                            <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center space-x-2 text-xs">
+                                <span class="font-semibold text-slate-200">${name}</span>
+                                <span class="bg-slate-600/40 text-slate-300 px-1.5 py-0.5 rounded font-semibold">N/A</span>
+                            </div>
+                        `;
+                }
+            }
+        });
+
+        countDisplay.innerText = includedCount;
+
+        if (includedCount > 0 && totalGpaPoints > 0) {
+            const finalGpa = (totalGpaPoints / includedCount).toFixed(2);
+            gpaDisplay.innerText = finalGpa;
+        } else if (includedCount > 0) {
+            gpaDisplay.innerText = '0.00';
+        } else {
+            gpaDisplay.innerText = 'N/A';
+        }
+
+        badgesContainer.innerHTML = badgesHtml !== '' ? badgesHtml : '<span class="text-xs text-slate-400 italic">No courses currently checked.</span>';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.gpa-toggle').forEach(cb => {
+            cb.addEventListener('change', recalculateGpa);
+        });
+        recalculateGpa();
+    });
+</script>
+</body>
+</html>

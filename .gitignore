@@ -1,0 +1,17 @@
+# Environment & Secrets
+.env
+
+# Maven / Build Output
+target/
+*.class
+
+# IntelliJ / IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# OS junk
+.DS_Store
+Thumbs.db
