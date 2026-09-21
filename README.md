@@ -131,7 +131,8 @@ Under SDK, select 17 (Oracle OpenJDK or Temurin). If Java 17 is not listed, clic
 In the left Project View sidebar, expand the folders to find:src $\rightarrow$ main $\rightarrow$ java $\rightarrow$ com.example.canvasminilab $\rightarrow$ CanvasMiniLabApplication.java  
 
 Double-click CanvasMiniLabApplication.java to open it in the editor. Open the right sidebar labeled Maven and expand the folders to find:canvasminilab $\rightarrow$ Lifecycle $\rightarrow$ install. 
-Press install to download all of the required dependencies and then press the green Play button at the top of the screen. 
+Press install to download all of the required dependencies. Next, edit the configuration and double check that the environment variables look like: `CANVAS_API_TOKEN=**your_api_token_here**;CANVAS_BASE_URL=https://boisestatecanvas.instructure.com`. 
+Then press the green Play button at the top of the screen. 
 IntelliJ will compile the project, and start the Spring Boot server. When the bottom console window shows log output ending with:
 ```
 Started CanvasMiniLabApplication in X.XXX seconds
