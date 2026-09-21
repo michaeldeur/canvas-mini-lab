@@ -101,7 +101,7 @@ Windows (cmd): Type `notepad .env` and press Enter.
 
 macOS (Terminal): Type `nano .env` and press Enter.  
 
-Paste the following lines into the file (replace your_token_here with your actual Canvas API token):
+Paste the following lines into the file (replace **your_token_here** with your actual Canvas API token):
 ```
 CANVAS_API_TOKEN=your_token_here
 CANVAS_BASE_URL=https://boisestatecanvas.instructure.com
