@@ -15,8 +15,6 @@ assignments from each class, their points, and due dates.
 
 ## API Endpoints Used
 
-### API Endpoints Used
-
 | Method | Endpoint | Description & Data Retrieved |
 | :--- | :--- | :--- |
 | **GET** | `/api/v1/users/self/profile` | Retrieves the authenticated student's profile information, including display name and avatar URL for the dashboard header. |
@@ -63,12 +61,105 @@ quite that confident in being able to make that functionality reliable
 yet. I have a lot of other minor tweaks and plans for this as well, but 
 we'll about getting these other potential features sorted out first.
 
-## Compiling and Using
+## Setup Instructions
+## Setup & Execution Instructions (Using IntelliJ IDEA)
 
-To compile the project, run this in your terminal inside the project directory containing the Authentication.java file:
-```javac Authentication.java```
-```java Authentication```
+Follow these step-by-step instructions to get the application running on your computer.
 
-To use the program follow the commands given in the menus, with R for register, L for login, P for reset password, and Q to quit the program.
+---
 
-## Results
+### Prerequisites
+
+1. **Git** (used to clone the project repository)
+    * **Windows:** Download and run the installer from [git-scm.com](https://git-scm.com/download/win). Keep default settings during installation.
+    * **macOS:** Open the **Terminal** app (`Cmd + Space` $\rightarrow$ type `Terminal` $\rightarrow$ press `Enter`), type `git --version`, and press `Enter`. If prompted, follow the on-screen prompt to install Apple Command Line Tools.
+
+2. **IntelliJ IDEA** (Community or Ultimate Edition)
+    * Download and install from [JetBrains IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+
+3. **Java 17 Development Kit (JDK 17)**
+    * Download JDK 17 from [Eclipse Temurin (Adoptium)](https://adoptium.net/temurin/releases/?version=17). Alternatively, IntelliJ can download JDK 17 automatically in Step 3.
+
+---
+
+### Step 1: Clone the Repository
+
+1. Open your terminal or command prompt:
+    * **Windows:** Press `Windows Key + R`, type `cmd`, and press `Enter`.
+    * **macOS:** Press `Cmd + Space`, type `Terminal`, and press `Enter`.
+2. Run the following command to download the project:
+   ```bash
+   git clone git@github.com:michaeldeur/canvas-mini-lab.git
+   ```
+## Step 2: Create Your .env File (API Key Setup)
+Navigate into the project folder:
+```bash
+cd canvas-mini-lab
+```
+Create and open a .env file:  
+Windows (cmd): Type `notepad .env` and press Enter. 
+(NOTE: Click Yes when asked to create a new file).
+
+macOS (Terminal): Type `nano .env` and press Enter.  
+
+Paste the following lines into the file (replace your_token_here with your actual Canvas API token):
+```
+CANVAS_API_TOKEN=your_token_here
+CANVAS_BASE_URL=https://boisestatecanvas.instructure.com
+```
+Save and close the file:
+
+Windows: Press Ctrl + S to save, then close Notepad.
+
+macOS: Press Ctrl + O, press Enter, then press Ctrl + X to exit Nano.
+
+**NOTE: Never commit your .env file to GitHub. It is listed in .gitignore to protect your token.**
+
+## Step 3: Open the Project in IntelliJ IDEA
+Launch IntelliJ IDEA.Click Open on the welcome screen (or go to File $\rightarrow$ Open...). 
+Select the canvas-mini-lab folder you cloned in Step 1 and click OK. 
+If prompted, select Trust Project. Ensure Project SDK is set to Java 17: Go to File $\rightarrow$ Project Structure $\rightarrow$ Project. 
+Under SDK, select 17 (Oracle OpenJDK or Temurin). If Java 17 is not listed, click Download SDK, choose 17, and click Apply.
+
+### Step 4: Run the Application
+In the left Project View sidebar, expand the folders to find:src $\rightarrow$ main $\rightarrow$ java $\rightarrow$ com.example.canvasminilab $\rightarrow$ CanvasMiniLabApplication.java  
+
+Double-click CanvasMiniLabApplication.java to open it in the editor. Open the right sidebar labeled Maven and expand the folders to find:canvasminilab $\rightarrow$ Lifecycle $\rightarrow$ install. 
+Press install to download all of the required dependencies and then press the green Play button at the top of the screen. 
+IntelliJ will compile the project, and start the Spring Boot server. When the bottom console window shows log output ending with:
+```
+Started CanvasMiniLabApplication in X.XXX seconds
+```
+Your application is live!
+
+### Step 5: Access the Web Dashboard
+Open any browser (Chrome, Edge, Safari, Firefox) and go to: http://localhost:8080.
+To stop the application, click the red Stop button in the top-right toolbar of IntelliJ (or in the bottom Run window).
+## Usage Examples
+
+Once the application is running at http://localhost:8080:
+
+### 1. Calculating Overall GPA & Filtering Courses
+* Navigating to the homepage automatically fetches your active Canvas courses and percentage grades.
+* Use the **GPA Course Selector** checkboxes on the left sidebar to check or uncheck individual courses.
+* The **Calculated Overall GPA** card updates instantly in real time, displaying your adjusted GPA and total included classes.
+
+### 2. Viewing Course Assignments
+1. Open the **Select Course** dropdown menu on the left sidebar.
+2. Choose an active course (e.g., `Fa26 - CS 408 - Full Stack Web Development`).
+3. Click **View Assignments**. (NOTE: **View Assignments** takes a couple seconds to reload.)
+4. The main panel populates a list of all assignments for that course, including titles, due dates, possible credit points, and links to the Canvas assignment.
+
+## Demo
+### 15 Second Demo GIF
+
+![15 Second App Demo](Demos/MiniLab15SecDemo.gif)
+
+NOTE: View Assignments takes a couple seconds to reload.
+
+### 1 Minute Demo Video GIF
+
+![1 Minute App Demo](Demos/MiniLab1MinDemo.gif)
+
+NOTE: View Assignments takes a couple seconds to reload.
+NOTE: Audio version of GIF in Demos folder.
