@@ -87,9 +87,16 @@ Follow these step-by-step instructions to get the application running on your co
     * **Windows:** Press `Windows Key + R`, type `cmd`, and press `Enter`.
     * **macOS:** Press `Cmd + Space`, type `Terminal`, and press `Enter`.
 2. Run the following command to download the project:
+
+    If SSH keys set up already:
    ```bash
    git clone git@github.com:michaeldeur/canvas-mini-lab.git
    ```
+   Else:
+   ```
+   git clone https://github.com/michaeldeur/canvas-mini-lab.git
+   ```
+
 ## Step 2: Create Your .env File (API Key Setup)
 Navigate into the project folder:
 ```bash
