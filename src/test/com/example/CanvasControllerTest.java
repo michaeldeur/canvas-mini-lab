@@ -1,3 +1,9 @@
+/**
+ * Author: Michael Deur
+ * Date: Fri Sep 18 07:49:22 AM MDT 2026
+ * Description: This class is the controller for managing the 3 API endpoints using in
+ * this project
+ */
 package com.example;
 
 import com.example.canvasminilab.controller.CanvasController;

@@ -1,3 +1,10 @@
+/**
+ * Author: Michael Deur
+ * Date: Fri Sep 18 07:49:22 AM MDT 2026
+ * Description: This class is the controller for managing the 3 API endpoints using in
+ * this project. Information is printed out to the terminal in a clean format and the
+ * endpoints include one for user profile, one for courses, and one for grades.
+ */
 package com.example.canvasminilab.controller;
 
 import com.example.canvasminilab.dto.Assignment;

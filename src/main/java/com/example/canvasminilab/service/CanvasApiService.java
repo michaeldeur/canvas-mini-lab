@@ -1,3 +1,10 @@
+/**
+ * Author: Michael Deur
+ * Date: Fri Sep 18 07:49:22 AM MDT 2026
+ * Description: Service layer responsible for communicating with the Canvas REST API.
+ * This class does token authentication, executes HTTP requests, deserializes JSON responses
+ * into DTOs, and navigates paginated API responses using the HTTP Link headers.
+ */
 package com.example.canvasminilab.service;
 
 import com.example.canvasminilab.dto.Course;
@@ -32,7 +39,12 @@ public class CanvasApiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Pattern NEXT_LINK_PATTERN = Pattern.compile("<([^>]+)>;\\s*rel=\"next\"");
 
-    // Endpoint 1: User Profile
+    /** This is for an endpoint and is used to retrieve the data from the user profile endpoint.
+     *
+     * @return a user profile of type UserProfile
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public UserProfile getUserProfile() throws IOException, InterruptedException {
         String url = baseUrl + "/api/v1/users/self/profile";
         HttpRequest request = HttpRequest.newBuilder()
@@ -48,17 +60,39 @@ public class CanvasApiService {
     }
 
     // Endpoint 2: Active Courses with Enrollments & Total Scores (for grade parsing)
+
+    /** This is for an endpoint and is used to retrieve the data from the course endpoint.
+     *
+     * @return a list of courses of type Course
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public List<Course> getCourses() throws IOException, InterruptedException {
         String url = baseUrl + "/api/v1/courses?enrollment_state=active&include[]=enrollments&include[]=total_scores";
         return fetchPaginatedData(url, new TypeReference<List<Course>>() {});
     }
 
-    // Endpoint 3: Assignments for Selected Course
+    /** This is for an endpoint and is used to retrieve the data from the assignment endpoint.
+     *
+     * @return a list of assignments of type Assignment
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public List<Assignment> getAssignments(Long courseId) throws IOException, InterruptedException {
         String url = baseUrl + "/api/v1/courses/" + courseId + "/assignments";
         return fetchPaginatedData(url, new TypeReference<List<Assignment>>() {});
     }
 
+    /** This helper method executes HTTP GET requests in a loop to fetch all pages of
+     * data for any data type (Course, Assignment, etc.) and combines them into a list.
+     *
+     * @param <T> The data type of list objects
+     * @param initialUrl The starting API endpoint URL for the initial request
+     * @param typeReference The Jackson TypeReference
+     * @return A list containing all aggregated records across all pages
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private <T> List<T> fetchPaginatedData(String initialUrl, TypeReference<List<T>> typeReference)
             throws IOException, InterruptedException {
 
@@ -89,6 +123,13 @@ public class CanvasApiService {
         return combinedResults;
     }
 
+    /**
+     * Parses an HTTP Link header string using regex to locate and extract
+     * the URL corresponding to the rel="next" relation.
+     *
+     * @param linkHeader The raw header string
+     * @return The absolute URL for the next page of results, or null if no next page.
+     */
     private String extractNextUrl(String linkHeader) {
         Matcher matcher = NEXT_LINK_PATTERN.matcher(linkHeader);
         return matcher.find() ? matcher.group(1) : null;

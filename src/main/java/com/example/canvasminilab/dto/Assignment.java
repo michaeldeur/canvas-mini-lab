@@ -1,3 +1,9 @@
+/**
+ * Author: Michael Deur
+ * Date: Fri Sep 18 07:49:22 AM MDT 2026
+ * Description: This class is a data transfer object that maps the raw JSON provided
+ * by the assignment endpoint to Java object so it can be used by the program.
+ */
 package com.example.canvasminilab.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
