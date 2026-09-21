@@ -171,11 +171,11 @@ NOTE: Audio version of GIF in Demos folder.
 * **Accepts user input.**
 * The user can input through the course dropdown or by checking the boxes for calculating grades.
 * **Produces formatted terminal output.**
-* Doesn't dump raw JSON, but converts it to Java objects used in HTML templates.
+* My program doesn't dump raw JSON to the user, but converts it to Java objects used in HTML templates.
 * **Handles errors gracefully.**
 * If there is an error, the error.html file will be triggered and show the error. Reloading, resets and tries to reload the main page.
 * **Handles pagination.**
-* Retrieves all pages and converts them through using DTOs.
+* I retrieve all pages and converts them through using DTOs.
 
 ### Non-Functional Requirements
 * **No secrets in the repo**
