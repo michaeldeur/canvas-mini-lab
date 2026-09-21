@@ -62,7 +62,6 @@ yet. I have a lot of other minor tweaks and plans for this as well, but
 we'll about getting these other potential features sorted out first.
 
 ## Setup Instructions
-## Setup & Execution Instructions (Using IntelliJ IDEA)
 
 Follow these step-by-step instructions to get the application running on your computer.
 
